@@ -27,6 +27,8 @@ app.post('/game', (req, res) => {
     res.status(200).json({ message: "Game created successfuly" })
 })
 
+
+// TODO: should also return the other player's info
 // req.body {match_code, user_id, user_name}
 app.post('/join', (req, res) => {
     const { match_code, user_id, user_name } = req.body
@@ -72,4 +74,4 @@ app.get('/pool', (req, res) => {
 
 })
 
-app.listen(3000)
+app.listen(3001)
