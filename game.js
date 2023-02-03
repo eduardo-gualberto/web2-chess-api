@@ -15,6 +15,14 @@ export default class Game {
         this.started = false
     }
 
+    getPlayer1() {
+        return this.player1
+    }
+
+    getPlayer2() {
+        return this.player2
+    }
+
     addPlayer(player) {
         if (!this.player1) {
             this.player1 = player
@@ -55,6 +63,10 @@ export default class Game {
 
     isGameStarted() {
         return this.started
+    }
+
+    isGameCreated() {
+        return this.player1 && this.player2
     }
 
 }

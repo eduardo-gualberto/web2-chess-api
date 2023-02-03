@@ -17,6 +17,7 @@ const games = {}
 
 // req.body {match_code, user_id, user_name}
 app.post('/game', (req, res) => {
+    console.log(req.body);
     const { match_code, user_id, user_name } = req.body
     const newGame = new Game(match_code)
     const newPlayer = new Player(user_id, user_name)
@@ -37,7 +38,8 @@ app.post('/join', (req, res) => {
     else {
         const newPlayer = new Player(user_id, user_name)
         games[match_code].addPlayer(newPlayer)
-        res.status(200).json({ message: "Joined game successfuly" })
+        const oponent = games[match_code].getPlayer1()
+        res.status(200).json({ message: "Joined game successfuly", oponent: { user_id: oponent.user_id, user_name: oponent.user_name } })
     }
 })
 // req.body {match_code, user_id, from, to, promotion?}
@@ -59,8 +61,9 @@ app.get('/endGame', (req, res) => {
 })
 
 // req.query = { match_code, user_id }
-app.get('/pool', (req, res) => {
-    const { match_code, user_id } = req.query.match_code
+app.get('/pool/move', (req, res) => {
+    const { match_code, user_id } = req.query
+    console.log(`user_id = ${user_id} pooling...`);
     if (!games[match_code])
         res.status(400).json({ message: `Could not find match with code ${match_code}` })
     else {
@@ -72,6 +75,21 @@ app.get('/pool', (req, res) => {
         }
     }
 
+})
+
+// req.query = { match_code }
+app.get('/pool/gameCreated', (req, res) => {
+    console.log(req.query);
+    const match_code = req.query.match_code
+    console.log(match_code);
+    if (!games[match_code])
+        res.status(400).json({ message: `Could not find match with code ${match_code}` })
+    else if (games[match_code].isGameCreated()) {
+        const oponent = games[match_code].getPlayer2()
+        res.status(200).json({ is_game_created: true, oponent: { user_id: oponent.user_id, user_name: oponent.user_name } })
+    }
+    else
+        res.status(200).json({ is_game_created: false })
 })
 
 app.listen(3001)
