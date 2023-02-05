@@ -17,8 +17,8 @@ const games = {}
 
 // req.body {match_code, user_id, user_name}
 app.post('/game', (req, res) => {
-    console.log(req.body);
     const { match_code, user_id, user_name } = req.body
+    console.log(`Game created by ${user_id} with match_code ${match_code}`, req.body);
     const newGame = new Game(match_code)
     const newPlayer = new Player(user_id, user_name)
 
@@ -33,6 +33,7 @@ app.post('/game', (req, res) => {
 // req.body {match_code, user_id, user_name}
 app.post('/join', (req, res) => {
     const { match_code, user_id, user_name } = req.body
+    console.log(`${user_id} joined game ${match_code}`, req.body);
     if (!games[match_code])
         res.status(400).json({ message: `Could not find match with code ${match_code}` })
     else {
@@ -45,6 +46,7 @@ app.post('/join', (req, res) => {
 // req.body {match_code, user_id, from, to, promotion?}
 app.post('/move', (req, res) => {
     const { match_code, user_id, from, to, promotion } = req.body
+    console.log(`Player ${user_id} made a move ${from + to}`, req.body);
     if (games[match_code].onMove({ from, to, promotion }, user_id)) {
         res.status(200).json({ message: "Moved successfuly", gameOver: games[match_code].isGameOver() })
     }
@@ -61,9 +63,13 @@ app.get('/endGame', (req, res) => {
 })
 
 // req.query = { match_code, user_id }
+let logTwiceCount = {}
 app.get('/pool/move', (req, res) => {
     const { match_code, user_id } = req.query
-    console.log(`user_id = ${user_id} pooling...`);
+    if (!logTwiceCount[user_id]){
+        logTwiceCount[user_id] = true
+        console.log(`user_id ${user_id} is pooling for moves of game ${match_code}...`);
+    }
     if (!games[match_code])
         res.status(400).json({ message: `Could not find match with code ${match_code}` })
     else {
@@ -76,12 +82,10 @@ app.get('/pool/move', (req, res) => {
     }
 
 })
-
+let poolGameCreatedCount = {}
 // req.query = { match_code }
 app.get('/pool/gameCreated', (req, res) => {
-    console.log(req.query);
     const match_code = req.query.match_code
-    console.log(match_code);
     if (!games[match_code])
         res.status(400).json({ message: `Could not find match with code ${match_code}` })
     else if (games[match_code].isGameCreated()) {
