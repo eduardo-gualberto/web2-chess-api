@@ -83,13 +83,14 @@ app.get('/pool/move', (req, res) => {
 
 })
 let poolGameCreatedCount = {}
-// req.query = { match_code }
+// req.query = { match_code, user_id }
 app.get('/pool/gameCreated', (req, res) => {
-    const match_code = req.query.match_code
+    const {match_code, user_id} = req.query
     if (!games[match_code])
         res.status(400).json({ message: `Could not find match with code ${match_code}` })
     else if (games[match_code].isGameCreated()) {
-        const oponent = games[match_code].getPlayer2()
+        const oponent = games[match_code].getOpponentOfPlayerWithId(user_id)
+        console.log("game created: oponent", oponent);
         res.status(200).json({ is_game_created: true, oponent: { user_id: oponent.user_id, user_name: oponent.user_name } })
     }
     else

@@ -23,6 +23,20 @@ export default class Game {
         return this.player2
     }
 
+    getPlayerWithId(user_id) {
+        if(this.player1.user_id == user_id)
+            return this.player1
+        else 
+            return this.player2
+    }
+
+    getOpponentOfPlayerWithId(user_id) {
+        if(this.player1.user_id == user_id)
+            return this.player2
+        else 
+            return this.player1
+    }
+
     addPlayer(player) {
         if (!this.player1) {
             this.player1 = player
