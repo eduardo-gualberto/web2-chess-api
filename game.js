@@ -7,6 +7,7 @@ export default class Game {
     game
     turn
     lastMove
+    lastPieceMove
     started
 
     constructor(match_code) {
@@ -50,6 +51,7 @@ export default class Game {
         this.started = true
         if (this.turn == user_id) {
             this.lastMove = this.game.move({ from: move.from, to: move.to, promotion: move.promotion ?? "q" })
+            this.lastPieceMove = move.piece
             this.#switchTurn()
             return true
         } else
@@ -61,7 +63,7 @@ export default class Game {
     }
 
     getLastMove() {
-        return this.lastMove
+        return {lastMove: this.lastMove, piece: this.lastPieceMove}
     }
 
     #switchTurn() {
