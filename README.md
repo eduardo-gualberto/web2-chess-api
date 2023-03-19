@@ -8,3 +8,5 @@
 npm install
 node app.js
 ```
+
+### Por padrão o servidor utiliza a porta 3001, para nao interferir com a porta padrão 3000 do React.
