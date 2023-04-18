@@ -9,4 +9,4 @@ npm install
 node app.js
 ```
 
-### By default it'll use the port numbered 3001, so it does'nt conflict with the frontend dev server port.
+### By default it'll use the port numbered 3001, so it doesn't conflict with the frontend dev server port.
