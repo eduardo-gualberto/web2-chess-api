@@ -2,11 +2,11 @@
 ## Eduardo dos Santos Gualberto
 ## RA: 769726
 
-## Como rodar o programa?
-### Basta na pasta raiz executar os comandos:
+## Run the program
+### Open a terminal window in the project's root directory and type:
 ```
 npm install
 node app.js
 ```
 
-### Por padrão o servidor utiliza a porta 3001, para nao interferir com a porta padrão 3000 do React.
+### By default it'll use the port numbered 3001, so it does'nt conflict with the frontend dev server port.
